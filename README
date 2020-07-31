@@ -1,0 +1,41 @@
+This library depends on :
+     - hscolour
+     - pretty-show
+     - ghc-paths
+     - directory 
+
+All of theses are in debian. Then, before building the library install it, else
+cabal will fetch them from hackage.
+
+Debian packages are named
+       libghc-hscolour-dev
+       libghc-pretty-show-dev
+       libghc-ghc-paths-dev
+(directory is included in ghc)
+
+You can also install documentation packages. Just replace -dev with -doc in
+debian package names.
+
+To build :
+    $ cabal v1-build
+To install :
+   $ cabal v1-install
+
+A .ghci that uses this library, is included.
+The .ghci requires some additional librairies to be used as is.
+From debian packages :
+     libghc-monad-loops-dev
+     libghc-regex-tdfa-dev
+     libghc-regex-tdfa-text-dev
+     libghc-unordered-containers-dev 
+     libghc-text-icu-dev
+
+Not in debian:
+    present
+
+If these libraries are not present, you must comment the corresponding
+import or def in .ghci. In particular, encoding is difficult to compile
+I've changed the .cabal to compile with ghc-8.6.5 with debian packages.
+Some constraints on version were too low on containers and regex-compat
+packages for matching the debian version.     
+NOTE: I removed the encoding librairie in favor of text-icu.
