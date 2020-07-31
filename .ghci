@@ -1,0 +1,115 @@
+:set -fprint-evld-with-show
+:set -v0
+:seti -w -XOverloadedStrings
+-- :seti -XTemplateHaskell 
+-- for Encoding
+:seti -XImplicitParams
+
+:m - Prelude
+-- import qualified System.Directory
+import qualified System.Environment as Env
+import qualified Data.Char as Char
+import qualified Data.Function as Function
+import qualified Data.Maybe as Maybe
+import qualified Data.Either as Either
+import qualified Data.List as List
+import qualified Data.Functor as Functor
+import qualified Data.Foldable as Foldable
+import qualified Data.Traversable as Traversable
+import qualified Control.Applicative as Applicative
+import qualified Control.Monad as Monad
+import qualified Control.Monad.Loops as Loops
+import qualified Data.ByteString.Char8 as BC
+import qualified Data.ByteString.Lazy.Char8 as BCL
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Lazy as BSL
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as Enc
+import qualified Text.Regex.TDFA as TDFA
+import qualified Text.Regex.TDFA.Text as TDFA
+import qualified Text.Read 
+import qualified Text.ParserCombinators.ReadP as ReadP
+-- import qualified Text.ParserCombinators.Parsec as Parsec hiding (Parser) 
+import qualified Text.ParserCombinators.Parsec as Parsec
+-- import qualified Text.Parsec.Text as Parsec
+import qualified Data.Text.IO as TIO 
+import qualified System.IO as IO
+--import qualified Shelly
+
+-- containers:
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+import qualified Data.Sequence as Sequence
+
+import qualified Data.HashMap.Lazy as HashMap
+import qualified Data.HashSet as HashSet
+
+-- package encoding:
+-- import qualified System.IO.Encoding as IOEnc
+-- import qualified Data.Encoding.ISO885915 as Latin1
+-- import qualified Data.Encoding.UTF8 as UTF8
+
+-- package text-icu
+import qualified Data.Text.ICU as ICU
+import qualified Data.Text.ICU.Convert as Conv
+
+import qualified DotGhci
+
+-- ignoring ctrl-z, when I hit it unintentionally.
+import qualified System.Posix.Signals as PS
+PS.installHandler PS.sigTSTP  PS.Ignore Nothing
+
+
+
+-- to read a ghci command file
+-- :def! . readFile 
+-- def! source readFile
+-- :rr reload this file
+:def! rr (\_ -> return ":script ~/dot.ghci")
+
+-- for the debugger, allow to force a thunk
+:def! seq \x -> seq x (return "")
+
+:def! pwd return . (\_ -> "DotGhci.pwd >>= putStrLn")
+:def! ls return . (":!ls -FB " ++)
+
+------------- Present
+:def! presentDebug \e -> return ("let it = " ++ e ++ "\n$(Present.presentIt)")
+:def! presentQualified \e -> return ("let it = " ++ e ++ "\nPrelude.putStrLn (Present.toShow True $(Present.presentIt))")
+:def! present \e -> return ("let it = " ++ e ++ "\nPrelude.putStrLn (Present.toShow False $(Present.presentIt))")
+:set -package present
+
+:set prompt "ghci> "
+:set prompt-cont "ghci| "
+
+-- hoogle
+:def! hoogle return . (":!hoogle -q --count=15 --color " ++) . DotGhci.escapeShellArg
+:def! search return . (":!hoogle -q --count=3 --color " ++) . DotGhci.escapeShellArg
+:def! doc return . (":!hoogle -q --color --info " ++) . DotGhci.escapeShellArg
+:def! hlint \s -> return $ ":!hlint " ++ if null s then "." else s
+
+-- lambdabot
+:def! lb DotGhci.lb ""                   -- runs arbitrary lambdabot commands
+:def! pl DotGhci.lb "pl"                 -- converts code to point-free (aka pointless) form
+:def! unpl DotGhci.lb "unpl"             -- converts back from point-free (aka pointless) form
+:def! do DotGhci.lb "do"                 -- converts binds to do notation
+:def! undo DotGhci.lb "undo"             -- converts do blocks to bind notation
+:def! index DotGhci.lb "index"           -- finds the module that defines the given identifier
+:def! instances DotGhci.lb "instances"   -- finds all instances of a given type class
+:def! src DotGhci.lb "src"               -- tries to find the source code for the given identifier
+:def! oeis DotGhci.lb "oeis"             -- looks up the On-Line Encyclopedia of Integer Sequences (https://oeis.org/)
+
+-- get the file which documents a symbol
+:def! docs DotGhci.docs
+
+-- ghc-pkg common operations
+:def! pkg return . (DotGhci.pkg ++) . DotGhci.escapeShellArg 
+:def! pkgdesc return . ((DotGhci.pkg ++ " describe ") ++) . DotGhci.escapeShellArg
+:def! pkgls return . ((DotGhci.pkg ++ " list ") ++) . DotGhci.escapeShellArg
+:def! pkgfind return . ((DotGhci.pkg ++ " find-module ") ++) . DotGhci.escapeShellArg
+
+:seti -interactive-print DotGhci.myPrint
+:def! pretty \_ -> return ":set -interactive-print DotGhci.myPrint"
+:def! nopretty \_ -> return ":set -interactive-print System.IO.print"
+
+-- vim: ft=haskell
