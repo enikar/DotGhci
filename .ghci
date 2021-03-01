@@ -26,7 +26,7 @@ import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as Enc
 import qualified Text.Regex.TDFA as TDFA
-import qualified Text.Regex.TDFA.Text as TDFA
+-- import qualified Text.Regex.TDFA.Text as TDFA
 import qualified Text.Read 
 import qualified Text.ParserCombinators.ReadP as ReadP
 -- import qualified Text.ParserCombinators.Parsec as Parsec hiding (Parser) 
@@ -73,7 +73,7 @@ PS.installHandler PS.sigTSTP  PS.Ignore Nothing
 :def! pwd return . (\_ -> "DotGhci.pwd >>= putStrLn")
 :def! ls return . (":!ls -FB " ++)
 
-------------- Present
+-- ------------- Present
 :def! presentDebug \e -> return ("let it = " ++ e ++ "\n$(Present.presentIt)")
 :def! presentQualified \e -> return ("let it = " ++ e ++ "\nPrelude.putStrLn (Present.toShow True $(Present.presentIt))")
 :def! present \e -> return ("let it = " ++ e ++ "\nPrelude.putStrLn (Present.toShow False $(Present.presentIt))")
@@ -94,6 +94,7 @@ PS.installHandler PS.sigTSTP  PS.Ignore Nothing
 :def! unpl DotGhci.lb "unpl"             -- converts back from point-free (aka pointless) form
 :def! do DotGhci.lb "do"                 -- converts binds to do notation
 :def! undo DotGhci.lb "undo"             -- converts do blocks to bind notation
+:def! unmtl DotGhci.lb "unmtl"           -- desugar mtl definition
 :def! index DotGhci.lb "index"           -- finds the module that defines the given identifier
 :def! instances DotGhci.lb "instances"   -- finds all instances of a given type class
 :def! src DotGhci.lb "src"               -- tries to find the source code for the given identifier

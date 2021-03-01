@@ -67,27 +67,42 @@ myPrint a = putStrLn $
                (Text.Show.Pretty.ppShow a)
 
 myColourPrefs :: HSC.ColourPrefs
--- myColourPrefs = HSC.defaultColourPrefs
---   { HSC.conop    = [HSC.Foreground HSC.Yellow]
---   , HSC.conid    = [HSC.Foreground $ HSC.Rgb  70 130 180, HSC.Bold]
---   , HSC.string   = [HSC.Foreground $ HSC.Rgb 255 160 122]
---   , HSC.char     = [HSC.Foreground HSC.Cyan]
---   , HSC.number   = [HSC.Foreground $ HSC.Rgb 30 144 255]
---   , HSC.keyglyph = [HSC.Foreground HSC.Yellow]
---   , HSC.variantselection = [HSC.Foreground $ HSC.Rgb 29 193 57]
---   , HSC.cpp = [ HSC.Foreground HSC.Magenta  ]
---   }
-
+{- defaultColourPrefs =
+ColourPrefs
+  { keyword = [ Foreground Green , Underscore ]
+  , keyglyph = [ Foreground Red ]
+  , layout = [ Foreground Cyan ]
+  , comment = [ Foreground Blue , Italic ]
+  , conid = [ Normal ]
+  , varid = [ Normal ]
+  , conop = [ Foreground Red , Bold ]
+  , varop = [ Foreground Cyan ]
+  , string = [ Foreground Magenta ]
+  , char = [ Foreground Magenta ]
+  , number = [ Foreground Magenta ]
+  , cpp = [ Foreground Magenta , Dim ]
+  , selection = [ Bold , Foreground Magenta ]
+  , variantselection = [ Dim , Foreground Red , Underscore ]
+  , definition = [ Foreground Blue ]
+  }
+-}
 myColourPrefs = HSC.defaultColourPrefs
-  { HSC.conop    = [HSC.Foreground HSC.Yellow]
-  , HSC.varop    = [HSC.Foreground $ HSC.Rgb 255 99 71] -- tomato
+  { -- HSc.keyword 
+    HSC.keyglyph = [HSC.Foreground HSC.Yellow]
+   -- , HSC.layout
+   -- , HSC.comment = [HSC.Foreground $ HSC.Rgb 205 133 63] -- peru like in my emacs theme 
+  , HSC.comment = [HSC.Foreground $ HSC.Rgb 30 144 255] -- like number
   , HSC.conid    = [HSC.Foreground $ HSC.Rgb  70 130 180] -- ligth steel blue
+    -- HSC.varid
+  , HSC.conop    = [HSC.Foreground HSC.Yellow]
+  , HSC.varop    = [HSC.Foreground $ HSC.Rgb 255 99 71] -- tomato
   , HSC.string   = [HSC.Foreground $ HSC.Rgb 250 160 132] -- salmon
   , HSC.char     = [HSC.Foreground $ HSC.Rgb 250 160 132] -- salmon
   , HSC.number   = [HSC.Foreground $ HSC.Rgb 30 144 255]  -- hodger blue 
-  , HSC.keyglyph = [HSC.Foreground HSC.Yellow]
-  , HSC.variantselection = [HSC.Foreground $ HSC.Rgb 255 99 71] -- tomato
   , HSC.cpp = [HSC.Foreground $ HSC.Rgb 32 178 170] -- light sea green
+    -- HSC.selection
+  , HSC.variantselection = [HSC.Foreground $ HSC.Rgb 255 99 71] -- tomato
+   -- HSC.definition
   }
 
 pkg :: String
